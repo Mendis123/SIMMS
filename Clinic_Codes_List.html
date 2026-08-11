@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clinic Codes List</title>
+<style>
+  :root{
+    --ink:#1B2430;
+    --ink-soft:#5B6472;
+    --paper:#F5F6F4;
+    --panel:#FFFFFF;
+    --line:#DEE2DD;
+    --teal:#0F6B62;
+    --teal-soft:#E4F0EE;
+    --amber:#B8863B;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --disp: 'Fraunces', 'Georgia', serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    padding:40px 20px 80px;
+    min-height:100vh;
+  }
+  @font-face{
+    font-family:'Fraunces';
+    src:local('Georgia');
+  }
+  .wrap{max-width:760px;margin:0 auto;}
+
+  header{margin-bottom:28px;}
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--teal);
+    margin:0 0 10px;
+  }
+  h1{
+    font-family:var(--disp);
+    font-weight:600;
+    font-size:clamp(30px,5vw,42px);
+    line-height:1.05;
+    margin:0 0 8px;
+    letter-spacing:-0.01em;
+  }
+  .sub{
+    color:var(--ink-soft);
+    font-size:14.5px;
+    margin:0;
+  }
+
+  .controls{
+    display:flex;
+    gap:10px;
+    margin:26px 0 18px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+  .search-box{
+    flex:1;
+    min-width:220px;
+    position:relative;
+  }
+  .search-box input{
+    width:100%;
+    padding:11px 14px 11px 36px;
+    border:1px solid var(--line);
+    border-radius:9px;
+    background:var(--panel);
+    font-family:var(--sans);
+    font-size:14.5px;
+    color:var(--ink);
+    outline:none;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .search-box input:focus{
+    border-color:var(--teal);
+    box-shadow:0 0 0 3px var(--teal-soft);
+  }
+  .search-box svg{
+    position:absolute;
+    left:12px;
+    top:50%;
+    transform:translateY(-50%);
+    width:15px;height:15px;
+    stroke:var(--ink-soft);
+  }
+  .toggle{
+    display:flex;
+    border:1px solid var(--line);
+    border-radius:9px;
+    overflow:hidden;
+    background:var(--panel);
+    flex-shrink:0;
+  }
+  .toggle button{
+    border:none;
+    background:transparent;
+    padding:10px 16px;
+    font-family:var(--sans);
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink-soft);
+    cursor:pointer;
+    transition:background .15s ease, color .15s ease;
+  }
+  .toggle button.active{
+    background:var(--teal);
+    color:#fff;
+  }
+
+  .meta-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    margin-bottom:10px;
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--ink-soft);
+    letter-spacing:.02em;
+  }
+
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+  }
+
+  .col-heads{
+    display:grid;
+    grid-template-columns:1fr 120px;
+    padding:12px 20px;
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    border-bottom:1px solid var(--line);
+    background:#FAFBFA;
+  }
+
+  .rows{max-height:none;}
+  .row{
+    display:grid;
+    grid-template-columns:1fr 120px;
+    align-items:center;
+    padding:13px 20px;
+    border-bottom:1px solid var(--line);
+    font-size:14.5px;
+  }
+  .row:last-child{border-bottom:none;}
+  .row.group-alt{background:#FAFBFA;}
+  .row .name{
+    color:var(--ink);
+    padding-right:14px;
+  }
+  .row .code{
+    font-family:var(--mono);
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--teal);
+    background:var(--teal-soft);
+    display:inline-block;
+    padding:4px 9px;
+    border-radius:6px;
+    letter-spacing:.02em;
+    width:fit-content;
+  }
+
+  .empty{
+    padding:40px 20px;
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:14px;
+  }
+
+  .group-label{
+    padding:9px 20px 4px;
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:.08em;
+    color:var(--amber);
+    background:#FBF7EF;
+    border-bottom:1px solid var(--line);
+  }
+
+  footer{
+    margin-top:22px;
+    text-align:center;
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+
+  @media (max-width:480px){
+    .col-heads, .row{grid-template-columns:1fr 92px;}
+    .row .code{font-size:11px;padding:3px 7px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Reference Directory</p>
+    <h1>Clinic Codes List</h1>
+    <p class="sub">Clinic name paired with its clinic code — search either column, or group by code to see shared entries.</p>
+  </header>
+
+  <div class="controls">
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input type="text" id="searchInput" placeholder="Search clinic name or code…" autocomplete="off">
+    </div>
+    <div class="toggle">
+      <button id="byNameBtn" class="active">By Name</button>
+      <button id="byCodeBtn">By Code</button>
+    </div>
+  </div>
+
+  <div class="meta-row">
+    <span id="countLabel">54 clinics</span>
+    <span id="sortLabel">sorted A–Z</span>
+  </div>
+
+  <div class="panel">
+    <div class="col-heads">
+      <span>Clinic Name</span>
+      <span>Clinic Code</span>
+    </div>
+    <div class="rows" id="rows"></div>
+  </div>
+
+  <footer>Source: Clinic List sheet, uploaded workbook</footer>
+</div>
+
+<script>
+const data = [["Advance Medical Imaging", "AMI"], ["Barclay Diagnostic Imaging", "BARC"], ["Hamilton Diagnostic Inc (formerly Wellington)", "BARC"], ["Beamsville Diagnostic Imaging", "BARC"], ["Bayview Hill Diagnostic Imaging Inc", "BHDI"], ["Barrie Vascular Imaging", "BAR"], ["Brampton Vascular Institute", "BVI"], ["Bronte Vascular Ultrasound", "BVU"], ["Hamilton Vascular Laboratory", "HVL"], ["Mississauga Vascular Laboratory & Ultrasound", "MVL"], ["Cambridge Diagnostic Imaging", "CAM"], ["Cornwall Radiology Associates Inc", "CRA"], ["Finchview X-Ray & Ultrasound", "FVD"], ["Finch-Weston X-Ray & Ultrasound", "FWR"], ["Greater Niagara Medical Imaging - Pelham", "GNMI"], ["Greater Niagara Medical Imaging - 464 Welland", "GNMI"], ["Greater Niagara Medical Imaging - Prince Charles", "GNMI"], ["Greater Niagara Medical Imaging - Queenston", "GNMI"], ["Greater Niagara Medical Imaging - Nebo", "GNMI"], ["Greater Niagara Medical Imaging - Stratford", "GNMI"], ["Greater Niagara Medical Imaging - McLeod", "GNMI"], ["Greater Niagara Medical Imaging - Linwell", "GNMI"], ["Greater Niagara Medical Imaging - Grimsby", "GNMI"], ["Greater Niagara Medical Imaging - Carlisle", "GNMI"], ["Greater Niagara Medical Imaging - Brock-Whitby", "GNMI"], ["Greater Niagara Medical Imaging - Ritson-Oshawa", "GNMI"], ["Embrun Medical Imaging", "IMEC"], ["Jane Wilson Diagnostic Services", "JWD"], ["Forest Hill Medical Imaging", "JWD"], ["Keele & Lawrence Ultrasound", "KAL"], ["Kitchener Waterloo Vascular Laboratory", "KWL"], ["Kitchener Waterloo Vascular Laboratory", "KWL"], ["Lucent Medical Imaging", "LMI"], ["Victoria X-Ray Ultrasound", "LVP"], ["Toronto Healthcare Centre", "LVP"], ["One Vascular Imaging (Niagara Vascular Laboratory)", "NVL"], ["Orillia X-Ray & Ultrasound", "OXU"], ["Peel Diagnostic Centres", "PDC"], ["Bathurst-Sheppard Diagnostic Imaging Centre", "TBA"], ["Toronto Cardiovascular Laboratory", "TCV"], ["Trenton Diagnostic Services (Read-Only)", "TDS01"], ["Toronto Diagnostic Centre", "TDC"], ["Wilson Medical Centre X-Ray & Ultrasound", "WMC"], ["Evans Radiology Services", "WMC"], ["Mobile Diagnostic Imaging", "MDI"], ["Onsite Medical Imaging Inc", "OMI"], ["Westminster Mobile Medical Imaging Inc", "WMM"], ["Heart Institute of the Caribbean - Kingston", "HIC"], ["Heart Institute of the Caribbean - Mandeville", "HIC"], ["Heart Institute of the Caribbean - Montego Bay (Andrews Memorial)", "HIC"], ["Heart Institute of the Caribbean - Nevis (New)", "HIC"], ["Heart Institute of the Caribbean - Ocho Rios", "HIC"], ["Heart Institute of the Caribbean - Spanish Town (Lifestyle Center)", "HIC"], ["Heart Institute of the Caribbean - St. Kitts (New)", "HIC"]];
+
+const rowsEl = document.getElementById('rows');
+const countLabel = document.getElementById('countLabel');
+const sortLabel = document.getElementById('sortLabel');
+const searchInput = document.getElementById('searchInput');
+const byNameBtn = document.getElementById('byNameBtn');
+const byCodeBtn = document.getElementById('byCodeBtn');
+
+let mode = 'name'; // 'name' or 'code'
+
+function escapeHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function render(){
+  const q = searchInput.value.trim().toLowerCase();
+  let filtered = data.filter(([name, code]) =>
+    name.toLowerCase().includes(q) || code.toLowerCase().includes(q)
+  );
+
+  if(filtered.length === 0){
+    rowsEl.innerHTML = '<div class="empty">No clinics match that search.</div>';
+    countLabel.textContent = '0 clinics';
+    return;
+  }
+
+  countLabel.textContent = filtered.length + (filtered.length === data.length ? ' clinics' : ' of ' + data.length + ' clinics');
+
+  let html = '';
+  if(mode === 'name'){
+    sortLabel.textContent = 'sorted A–Z';
+    const sorted = [...filtered].sort((a,b) => a[0].localeCompare(b[0]));
+    sorted.forEach(([name, code], i) => {
+      html += `<div class="row${i % 2 ? ' group-alt' : ''}">
+        <span class="name">${escapeHtml(name)}</span>
+        <span class="code">${escapeHtml(code)}</span>
+      </div>`;
+    });
+  } else {
+    sortLabel.textContent = 'grouped by shared code';
+    const sorted = [...filtered].sort((a,b) => a[1].localeCompare(b[1]) || a[0].localeCompare(b[0]));
+    let lastCode = null;
+    let altToggle = false;
+    sorted.forEach(([name, code]) => {
+      if(code !== lastCode){
+        const count = sorted.filter(r => r[1] === code).length;
+        html += `<div class="group-label">${escapeHtml(code)}${count > 1 ? ' · ' + count + ' clinics' : ''}</div>`;
+        lastCode = code;
+        altToggle = !altToggle;
+      }
+      html += `<div class="row${altToggle ? ' group-alt' : ''}">
+        <span class="name">${escapeHtml(name)}</span>
+        <span class="code">${escapeHtml(code)}</span>
+      </div>`;
+    });
+  }
+  rowsEl.innerHTML = html;
+}
+
+searchInput.addEventListener('input', render);
+byNameBtn.addEventListener('click', () => {
+  mode = 'name';
+  byNameBtn.classList.add('active');
+  byCodeBtn.classList.remove('active');
+  render();
+});
+byCodeBtn.addEventListener('click', () => {
+  mode = 'code';
+  byCodeBtn.classList.add('active');
+  byNameBtn.classList.remove('active');
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
